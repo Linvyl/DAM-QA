@@ -4,224 +4,223 @@ This repository contains the official implementation of **DAM-QA**, a framework 
 
 This method enables more effective grounding and reasoning over fine-grained textual information, leading to significant performance gains on challenging VQA benchmarks.
 
-
 ## Quick Start
 
 ### Installation
 
-1.  Clone the repository:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Linvyl/DAM-QA.git
+   ```
 
-    ```bash
-    git clone https://github.com/Linvyl/DAM-QA.git
-    cd dam-qa
-    ```
+2. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-2.  Install the required dependencies:
+3. Set up your data directory path in `src/config.py`:
+   ```python
+   BASE_DIR = "/path/to/your/datasets"  # Update this path
+   ```
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+## Repository Structure
 
-### Basic Usage
-
-```python
-from dam_qa import DAMSlidingWindow, DAMConfig
-
-# Initialize the model with a specific configuration
-config = DAMConfig(window_size=512, stride=256)
-model = DAMSlidingWindow(config)
-
-# Answer a question about an image
-image_path = "path/to/your/image.jpg"
-question = "What is the main title?"
-answer = model.answer_question(image_path, question)
-
-print(f"Question: {question}")
-print(f"Answer: {answer}")
+```
+DAM-QA/
+├── src/                    # Core DAM-QA implementation
+│   ├── config.py          # Dataset configs, prompts, parameters
+│   ├── core.py            # Main inference classes
+│   └── utils.py           # Utility functions
+├── vlms/                  # VLM baseline implementations
+│   ├── run_inference.py   # VLM inference runner
+│   ├── config.py          # VLM dataset configurations
+│   └── models/            # Individual VLM model implementations
+│       ├── internvl.py    # InternVL model
+│       ├── minicpm.py     # MiniCPM model
+│       ├── molmo.py       # Molmo model
+│       ├── ovis.py        # OVIS model  
+│       ├── phi.py         # Phi-3-Vision model
+│       ├── qwenvl.py      # Qwen-VL model
+│       └── videollama.py  # VideoLLaMA model
+├── evaluation/            # Evaluation framework
+│   ├── metrics.py         # VQA scoring metrics
+│   └── evaluator.py       # Main evaluation runner
+├── run_experiment.py      # Main DAM-QA experiment runner
+├── requirements.txt       # Python dependencies
+└── outputs/               # Results directory
+    ├── full_image_default/
+    ├── sliding_window_default/
+    └── vlm_results/
 ```
 
 ## Supported Datasets
 
 Our implementation has been rigorously evaluated on the following benchmarks:
 
-| Dataset          | Task                        | Metric            | Images |
-| :--------------- | :-------------------------- | :---------------- | :----- |
-| **DocVQA** | Document Question Answering | ANLS              | \~12K   |
-| **InfographicVQA** | Infographic Understanding | ANLS              | \~5K    |
-| **TextVQA** | Scene-Text VQA              | VQA Score         | \~28K   |
-| **ChartQA** | Chart Interpretation        | Relaxed Accuracy  | \~20K   |
-| **ChartQA-Pro** | Advanced Chart QA           | Relaxed Accuracy  | \~1.3K  |
-| **VQAv2** | General-Purpose VQA         | VQA Score         | \~204K  |
+| Dataset            | Task                        | Metric           | Images | Config Key |
+| :----------------- | :-------------------------- | :--------------- | :----- | :--------- |
+| **DocVQA**         | Document Question Answering | ANLS             | ~12K   | `docvqa_val` |
+| **InfographicVQA** | Infographic Understanding   | ANLS             | ~5K    | `infographicvqa_val` |
+| **TextVQA**        | Scene-Text VQA              | VQA Score        | ~28K   | `textvqa_val` |
+| **ChartQA**        | Chart Interpretation        | Relaxed Accuracy | ~20K   | `chartqa_test_human`, `chartqa_test_augmented` |
+| **ChartQA-Pro**    | Advanced Chart QA           | Relaxed Accuracy | ~1.3K  | `chartqapro_test` |
+| **VQAv2**          | General-Purpose VQA         | VQA Score        | ~204K  | `vqav2_val` |
 
 ## Data Preparation
 
-### Download Datasets
-
-Please download the datasets from their official sources:
-
-1.  **DocVQA**: [Official Website](https://www.docvqa.org/)
-2.  **InfographicVQA**: [Official Website](https://www.docvqa.org/datasets/infographicvqa)
-3.  **TextVQA**: [Official Website](https://textvqa.org/)
-4.  **ChartQA**: [Official Website](https://github.com/vis-nlp/ChartQA)
-5.  **VQAv2**: [Official Website](https://visualqa.org/)
-
 ### Dataset Structure
 
-For seamless integration, please organize your datasets according to the following directory structure:
+Organize your datasets according to the following directory structure:
 
 ```
 /path/to/datasets/
+├── ChartQAPro/
+│   ├── test.jsonl
+│   └── images/
+├── ChartQA/
+│   ├── test_human.jsonl
+│   ├── test_augmented.jsonl
+│   └── images/
 ├── DocVQA/
 │   ├── val.jsonl
 │   └── images/
 ├── InfographicVQA/
 │   ├── infographicvqa_val.jsonl
 │   └── images/
-├── ChartQA/
-│   ├── test_human.jsonl
-│   ├── test_augmented.jsonl
+├── TextVQA/
+│   ├── textvqa_val.jsonl
 │   └── images/
-└── ...
+└── VQAv2/
+    ├── vqav2_val.jsonl
+    └── images/
 ```
 
-### Configuration
+Update the `BASE_DIR` variable in `src/config.py` to point to your dataset directory.
 
-DAM-QA supports environment-based configuration for dataset paths to ensure flexibility.
+## Running DAM-QA Experiments
 
-**1. Set Environment Variable (Optional)**
+### Basic Usage
 
-You can specify your main dataset directory using an environment variable. If not set, the framework defaults to `./data/datasets` within the project root.
+Use `run_experiment.py` to run DAM-QA experiments:
 
+**Full Image Baseline:**
 ```bash
-export DAM_DATA_DIR="/path/to/your/datasets"
+python run_experiment.py --method full_image --dataset chartqapro_test --gpu 0
 ```
 
-**2. Verify Setup**
-
-The unified configuration is managed in `config.py`. To validate that your datasets are correctly configured, you can run:
-
+**Sliding Window (Our Method):**
 ```bash
-# Check a specific dataset configuration
-python -c "from config import validate_dataset_paths; print(validate_dataset_paths('infographicvqa_val'))"
-
-# Validate the entire experimental setup
-python experiments/utils.py
+python run_experiment.py --method sliding_window --dataset chartqapro_test --gpu 0
 ```
 
-## Running Inference
-
-### Command-Line Interface
-
-Use `scripts/inference.py` to run DAM-QA on any supported dataset.
-
-**DAM-QA (Our Sliding Window Method)**
-
+**Run on All Datasets:**
 ```bash
-python scripts/inference.py \
-    --method sliding \
+python run_experiment.py --method sliding_window --dataset all --gpu 0
+```
+
+### Advanced Experiments
+
+**Granularity Parameter Sweep:**
+```bash
+python run_experiment.py --method granularity_sweep --dataset chartqapro_test --gpu 0
+```
+
+**Prompt Design Ablation:**
+```bash
+python run_experiment.py --method prompt_ablation --dataset chartqapro_test --gpu 0
+```
+
+**Unanswerable Vote Weight Sweep:**
+```bash
+python run_experiment.py --method unanswerable_weight_sweep --dataset chartqapro_test --gpu 0
+```
+
+**Custom Parameters:**
+```bash
+python run_experiment.py \
+    --method sliding_window \
     --dataset docvqa_val \
-    --output-dir ./results \
-    --gpu 0
-```
-
-**Baseline (Full-Image Inference)**
-
-```bash
-python scripts/inference.py \
-    --method baseline \
-    --dataset docvqa_val \
-    --output-dir ./results \
-    --gpu 0
-```
-
-### Advanced Options
-
-You can customize inference parameters such as window size, stride, and token limits:
-
-```bash
-python scripts/inference.py \
-    --method sliding \
-    --dataset chartqa_test_human \
-    --window-size 768 \
+    --window_size 768 \
     --stride 384 \
-    --max-tokens 100 \
-    --output-dir ./results
+    --unanswerable_weight 0.0 \
+    --gpu 0
 ```
 
-## Reproducing Results
+### Available Options
 
-### Main Results
+- `--method`: Choose from `full_image`, `sliding_window`, `granularity_sweep`, `prompt_ablation`, `unanswerable_weight_sweep`
+- `--dataset`: Choose from `chartqapro_test`, `chartqa_test_human`, `docvqa_val`, `infographicvqa_val`, etc., or `all`
+- `--window_size`: Sliding window size (default: 512)
+- `--stride`: Sliding window stride (default: 256) 
+- `--unanswerable_weight`: Weight for unanswerable votes (default: 1.0)
+- `--use_visibility_rule`/`--no_visibility_rule`: Control visibility constraint
+- `--use_unanswerable_rule`/`--no_unanswerable_rule`: Control unanswerable instruction
 
-To reproduce the main results reported in our paper, you can use the provided shell scripts, which execute inference across all supported datasets.
+## Running VLM Baselines
+
+### VLM Inference
+
+Use `vlms/run_inference.py` to run VLM baseline models:
+
+**InternVL:**
+```bash
+python vlms/run_inference.py --model internvl --dataset chartqapro_test --batch-size 1
+```
+
+**MiniCPM:**
+```bash
+python vlms/run_inference.py --model minicpm --dataset docvqa_val --batch-size 2
+```
+
+**Other supported models:** `molmo`, `ovis`, `phi`, `qwenvl`, `videollama`
+
+
+## Evaluation
+
+### Automatic Evaluation
+
+Results are automatically saved to CSV files. Use the evaluation framework to compute metrics:
 
 ```bash
-# Run evaluation using our sliding window approach
-bash scripts/run_all_datasets.sh sliding
-
-# Run evaluation using the baseline full-image approach
-bash scripts/run_all_datasets.sh baseline
+python evaluation/evaluator.py --results_dir ./outputs --dataset chartqapro_test
 ```
 
-### Ablation Studies
+### Manual Score Calculation
 
-Our repository includes scripts to reproduce the ablation studies.
-
-1.  **Granularity Analysis** (`experiments/granularity/`):
-
-    ```bash
-    python experiments/granularity/dam_sliding_alldataset_granularity_sweep.py
-    ```
-
-2.  **Prompt Design** (`experiments/prompt_design/`):
-
-    ```bash
-    python experiments/prompt_design/dam_sliding_alldataset_no_rule.py
-    python experiments/prompt_design/dam_sliding_alldataset_rule1_only.py
-    python experiments/prompt_design/dam_sliding_alldataset_rule2_only.py
-    ```
-
-3.  **Vote Weighting** (`experiments/vote_weights/`):
-
-    ```bash
-    python experiments/vote_weights/dam_alldataset_find_best_unans_weight_sweep.py
-    ```
+```bash
+python evaluation/metrics.py --input_file ./outputs/sliding_window_default/chartqapro_test/results.csv --dataset chartqapro_test
+```
 
 ## Results
 
 ### Main Results
 
-DAM-QA consistently outperforms the baseline DAM across multiple text-rich VQA benchmarks.
+DAM-QA consistently outperforms the baseline DAM across multiple text-rich VQA benchmarks:
 
-| Method              | DocVQA (ANLS) | InfographicVQA (ANLS) | TextVQA (VQA Score) | ChartQA (Relaxed Acc.) | ChartQA-Pro (Relaxed Acc.) | VQAv2 (VQA Score) |
-| :------------------ | :-----------: | :-------------------: | :-----------------: | :--------------------: | :------------------------: | :---------------: |
-| DAM (Baseline)      |     35.22     |         19.27         |        65.22        |         35.62          |           18.90            |       79.25       |
-| **DAM-QA (Ours)** |   **42.34** |       **35.60** |      **67.29** |       **40.06** |         **18.98** |     **79.20** |
+| Method            | DocVQA (ANLS) | InfographicVQA (ANLS) | TextVQA (VQA Score) | ChartQA (Relaxed Acc.) | ChartQA-Pro (Relaxed Acc.) | VQAv2 (VQA Score) |
+| :---------------- | :-----------: | :-------------------: | :-----------------: | :--------------------: | :------------------------: | :---------------: |
+| DAM (Baseline)    |     35.22     |         19.27         |        65.22        |         35.62          |           18.90            |       79.25       |
+| **DAM-QA (Ours)** |   **42.34**   |       **35.60**       |      **67.29**      |       **40.06**        |         **18.98**          |     **79.20**     |
 
-### Ablation Study Highlights
+### Key Findings
 
-  - **Window Granularity**: A window size of 512 pixels with a 50% overlap (stride of 256) provides the best trade-off between capturing fine-grained detail and maintaining global context.
-  - **Prompt Design**: Enforcing both visual grounding (Rule 1) and abstention for insufficient evidence (Rule 2) yields the most balanced and robust performance.
-  - **Vote Weighting**: Assigning a weight of zero to "unanswerable" predictions from local patches is critical. Including them in the vote aggregation dilutes correct answers and degrades performance.
+- **Window Granularity**: Window size of 512 pixels with 50% overlap (stride=256) provides optimal performance
+- **Prompt Design**: Both visibility constraint and unanswerable instruction are crucial
+- **Vote Weighting**: Setting unanswerable weight to 0.0 significantly improves performance
 
-## Repository Structure
+## Configuration
 
-```
-DAM-QA/
-├── dam_qa/                 # Main package for the DAM-QA framework
-│   ├── models/             # Model implementations
-│   │   ├── dam_sliding.py  # Sliding window approach
-│   │   └── dam_baseline.py # Baseline full-image approach
-│   ├── utils/              # Utility functions for image processing and voting
-│   └── config.py           # Central configuration for datasets and model parameters
-├── scripts/                # High-level scripts for inference and evaluation
-│   └── inference.py        # Main inference script
-├── experiments/            # Scripts to run ablation studies
-│   ├── granularity/
-│   ├── prompt_design/
-│   └── vote_weights/
-├── evaluation/             # Evaluation framework and scoring scripts
-└── docs/                   # Documentation and related assets
-```
+### Main Configuration (`src/config.py`)
+
+- **Dataset paths**: Update `BASE_DIR` and individual dataset configurations
+- **Model parameters**: Adjust `DEFAULT_INFERENCE_PARAMS` and `DEFAULT_IMAGE_PARAMS`
+- **Experiment settings**: Modify `GRANULARITY_MODES` and `UNANSWERABLE_WEIGHTS`
+
+### VLM Configuration (`vlms/config.py`)
+
+- **Dataset collections**: `ds_collections` mapping dataset names to configurations
+- **Model-specific settings**: Adjust parameters for each VLM model
+
 
 ## Citation
 
@@ -235,5 +234,3 @@ If you find our work useful in your research, please consider citing our paper:
   year={2025}
 }
 ```
-
-**Keywords**: Visual Question Answering, Text-rich Images, Sliding Window, Document Understanding, Chart Analysis, Vision-Language Models.

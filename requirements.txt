@@ -1,39 +1,23 @@
-# Core dependencies
+# Core dependencies for DAM-QA
 torch>=2.0.0
-torchvision>=0.15.0
 transformers>=4.30.0
-tokenizers>=0.13.0
+torchvision>=0.15.0
 
-# Image processing
+# Image processing and data handling
 Pillow>=9.0.0
 numpy>=1.24.0
-
-# Data processing and utilities
 pandas>=1.5.0
-tqdm>=4.64.0
-pathlib
 
-# Deep learning acceleration (optional but recommended)
-accelerate>=0.20.0
-bitsandbytes>=0.39.0
+# Progress bars and utilities
+tqdm>=4.64.0
 
 # VLM model specific dependencies
-einops>=0.6.0
-timm>=0.9.0
-torchvision>=0.15.0
-opencv-python>=4.8.0
-sentencepiece>=0.1.99
+qwen-vl-utils  # Required for QwenVL model
 
-# Qwen VL specific
-qwen-vl-utils
+# Recommended (optional but improves performance)
+accelerate>=0.20.0
 
-# Additional utilities for some models
-flash-attn>=2.0.0  # Optional, for faster attention
-xformers>=0.0.20   # Optional, for memory efficiency
-
-# Development and testing
-pytest>=7.0.0
-pytest-cov>=4.0.0
-
-# Note: Some models may require additional dependencies
-# Install specific model requirements as needed
+# Note: Additional dependencies may be required for specific VLM models:
+# - Some models may need specific transformers versions
+# - Install model-specific requirements as needed from their official repos
+# - For faster inference, consider: flash-attn

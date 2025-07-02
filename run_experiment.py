@@ -33,7 +33,7 @@ from typing import List
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 from src.core import FullImageInference, SlidingWindowInference, run_experiment
-from src.config import (
+from config import (
     DATASET_CONFIGS, get_dataset_config, get_output_path,
     GRANULARITY_MODES, UNANSWERABLE_WEIGHTS
 )

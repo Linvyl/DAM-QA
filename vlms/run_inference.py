@@ -9,11 +9,10 @@ from tqdm import tqdm
 from collections import Counter
 import torch
 import sys
-from pathlib import Path
-
-# Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from vlms.config import ds_collections
+from config import DATASET_CONFIGS
+
+
 
 
 def set_seed(seed: int = 42) -> None:
@@ -57,7 +56,7 @@ def extract_image_id(item: Dict[str, Any], dataset: str) -> Any:
         return image_name.split("/")[-1].split(".")[0]
 
 
-def process_batch_data(data: List[Dict], dataset: str, config: Dict[str, Any]) -> tuple:
+def process_batch_data(data: List[Dict], dataset: str, config) -> tuple:
     """Process and extract batch data efficiently."""
     qids = [item["question_id"] for item in data]
     img_ids = [extract_image_id(item, dataset) for item in data]
@@ -67,7 +66,7 @@ def process_batch_data(data: List[Dict], dataset: str, config: Dict[str, Any]) -
     questions = [item["question"][0] if is_chartqapro else item["question"] for item in data]
     gts = [item["answer"][0] if is_chartqapro else item["answer"] for item in data]
     
-    img_paths = [os.path.join(config["image_folder"], item["image"]) for item in data]
+    img_paths = [os.path.join(config.img_folder, item["image"]) for item in data]
     
     return qids, img_ids, questions, gts, img_paths
 
@@ -91,7 +90,7 @@ def main():
     parser.add_argument("--model", type=str, required=True,
                         help="Model name (file in models/)")
     parser.add_argument("--dataset", type=str, required=True,
-                        help="Dataset name (key in ds_collections)")
+                        help="Dataset name (key in DATASET_CONFIGS)")
     parser.add_argument("--batch-size", type=int, default=1,
                         help="Batch size for inference")
     parser.add_argument("--output-dir", type=str, 
@@ -102,35 +101,32 @@ def main():
     set_seed()
     
     # Load configuration and inference function
-    if args.dataset not in ds_collections:
+    if args.dataset not in DATASET_CONFIGS:
         raise ValueError(f"Dataset '{args.dataset}' not found in configuration")
     
-    config = ds_collections[args.dataset].copy()
-    config["dataset_name"] = args.dataset
+    config = DATASET_CONFIGS[args.dataset]
+    dataset_name = args.dataset
     inference_fn = load_inference_module(args.model)
     
     # Load and process data
-    with open(config["data_path"], encoding="utf-8") as f:
+    with open(config.qa_file, encoding="utf-8") as f:
         data = [json.loads(line) for line in f]
     
-    qids, img_ids, questions, gts, img_paths = process_batch_data(data, args.dataset, config)
+    qids, img_ids, questions, gts, img_paths = process_batch_data(data, dataset_name, config)
     
     # Datasets that use most common answer for ground truth
     vqa_datasets = {"vqav2_restval", "textvqa_val", "vqav2_val"}
     
-    # Process batches
     for i in tqdm(range(0, len(questions), args.batch_size), desc="Processing batches"):
         batch_slice = slice(i, i + args.batch_size)
         batch_questions = questions[batch_slice]
         batch_images = img_paths[batch_slice]
         batch_gts = gts[batch_slice]
         
-        # Run inference
         batch_answers = inference_fn(batch_questions, batch_images, config=config)
         
-        # Display results
         print(f"Predictions: {batch_answers}")
-        if args.dataset in vqa_datasets:
+        if dataset_name in vqa_datasets:
             gt_display = [most_common_answer(gt) for gt in batch_gts]
         else:
             gt_display = batch_gts
@@ -148,7 +144,7 @@ def main():
             data[idx].pop("image", None)
             data[idx].pop("answer", None)
     
-    save_results(data, args.model, config["dataset_name"], args.output_dir)
+    save_results(data, args.model, dataset_name, args.output_dir)
 
 
 if __name__ == "__main__":

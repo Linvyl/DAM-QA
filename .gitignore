@@ -63,9 +63,10 @@ outputs/
 *.log
 logs/
 
-# Data directories (uncomment if you want to exclude data)
-# data/
-# datasets/
+# Images
+*.png
+*.jpg
+*.jpeg
 
 # Model weights and checkpoints
 models/

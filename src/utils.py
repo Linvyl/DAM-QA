@@ -76,29 +76,18 @@ def get_windows(W: int, H: int, window_size: int, stride: int) -> List[Tuple[int
     return list(dict.fromkeys(coords))
 
 
-def aggregate_votes(votes: defaultdict, unanswerable_weight: float = 1.0) -> str:
+def aggregate_votes(votes: defaultdict) -> str:
     """
-    Aggregate votes from multiple predictions with optional unanswerable weighting.
+    Aggregate votes from multiple predictions.
     
     Args:
         votes: Dictionary of prediction -> vote weight
-        unanswerable_weight: Weight multiplier for "unanswerable" predictions
         
     Returns:
         Best prediction based on weighted votes
     """
     if not votes:
         return ""
-    
-    # Apply unanswerable weight if needed
-    if unanswerable_weight != 1.0:
-        weighted_votes = defaultdict(float)
-        for pred, weight in votes.items():
-            if pred.lower() == "unanswerable":
-                weighted_votes[pred] = weight * unanswerable_weight
-            else:
-                weighted_votes[pred] = weight
-        return max(weighted_votes, key=weighted_votes.get)
     
     return max(votes, key=votes.get)
 

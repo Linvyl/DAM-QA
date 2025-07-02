@@ -18,6 +18,13 @@ This method enables more effective grounding and reasoning over fine-grained tex
    pip install -r requirements.txt
    ```
 
+   **Optional: Create a conda environment:**
+   ```bash
+   conda create -n dam-qa python=3.10
+   conda activate dam-qa
+   pip install -r requirements.txt
+   ```
+
 3. **Data Preparation:**
    - All required annotation `.jsonl` files are already included in the repository under the `data/` directory.
    - You only need to download the image files for each dataset. **Follow the instructions in [`data/dataset_guide.md`](data/dataset_guide.md)** to download and place the images in the correct subfolders.
@@ -96,8 +103,6 @@ data/
     └── images/
 ```
 
-- **Do not change the folder names or move the annotation files.**
-- **You do NOT need to set any data path in `src/config.py`—the code will use `data/` as the default base directory.**
 - For detailed image download instructions, see [`data/dataset_guide.md`](data/dataset_guide.md).
 
 ## Running DAM-QA Experiments
@@ -121,7 +126,7 @@ python run_experiment.py --method sliding_window --dataset chartqapro_test --gpu
 python run_experiment.py --method sliding_window --dataset all --gpu 0
 ```
 
-### Advanced Experiments
+### Ablation Studies
 
 **Granularity Parameter Sweep:**
 ```bash
@@ -167,15 +172,14 @@ Use `vlms/run_inference.py` to run VLM baseline models:
 
 **InternVL:**
 ```bash
-python vlms/run_inference.py --model internvl --dataset chartqapro_test --batch-size 1
+python vlms/run_inference.py --model internvl --dataset chartqapro_test
 ```
 
-**MiniCPM:**
-```bash
-python vlms/run_inference.py --model minicpm --dataset docvqa_val --batch-size 2
-```
+**Other supported models:** `minicpm`, `molmo`, `ovis`, `phi`, `qwenvl`, `videollama`
 
-**Other supported models:** `molmo`, `ovis`, `phi`, `qwenvl`, `videollama`
+**Note:** If you encounter errors when running VLM models, install the required dependencies for each model:
+- Follow installation instructions from the official HuggingFace or GitHub repositories of each VLM
+- Each model may require specific versions of transformers, torch, or additional packages
 
 
 ## Evaluation
@@ -185,13 +189,13 @@ python vlms/run_inference.py --model minicpm --dataset docvqa_val --batch-size 2
 Results are automatically saved to CSV files. Use the evaluation framework to compute metrics:
 
 ```bash
-python evaluation/evaluator.py --results_dir ./outputs --dataset chartqapro_test
+python evaluation/evaluator.py --folder ./outputs/sliding_window_default --use_llm
 ```
 
 ### Manual Score Calculation
 
 ```bash
-python evaluation/metrics.py --input_file ./outputs/sliding_window_default/chartqapro_test/results.csv --dataset chartqapro_test
+python evaluation/metrics.py --file ./outputs/sliding_window_default/chartqapro_test/results.csv --use_llm
 ```
 
 ## Results
@@ -213,21 +217,18 @@ DAM-QA consistently outperforms the baseline DAM across multiple text-rich VQA b
 
 ## Configuration
 
-### Main Configuration (`src/config.py`)
+### Main Configuration (`config.py`)
 
-- **Dataset paths**: Update `BASE_DIR` and individual dataset configurations
 - **Model parameters**: Adjust `DEFAULT_INFERENCE_PARAMS` and `DEFAULT_IMAGE_PARAMS`
 - **Experiment settings**: Modify `GRANULARITY_MODES` and `UNANSWERABLE_WEIGHTS`
 
-### VLM Configuration (`vlms/config.py`)
+### VLM Configuration
 
-- **Dataset collections**: `ds_collections` mapping dataset names to configurations
-- **Model-specific settings**: Adjust parameters for each VLM model
+- **Dataset configurations**: Uses `DATASET_CONFIGS` from root `config.py`
+- **Model-specific settings**: Configured in individual model files under `vlms/models/`
 
 
 ## Citation
-
-If you find our work useful in your research, please consider citing our paper:
 
 ```bibtex
 @article{damqa2025,

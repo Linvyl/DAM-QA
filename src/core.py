@@ -11,11 +11,15 @@ from tqdm import tqdm
 from PIL import Image
 from transformers import AutoModel
 
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+
 from .utils import (
     resize_keep_aspect, create_full_image_mask, get_windows,
     aggregate_votes, safe_load_image, ensure_dir, format_question
 )
-from .config import DatasetConfig, PromptTemplates, DEFAULT_INFERENCE_PARAMS, DEFAULT_IMAGE_PARAMS
+from config import DatasetConfig, PromptTemplates, DEFAULT_INFERENCE_PARAMS, DEFAULT_IMAGE_PARAMS
 
 
 class DAMInference:
@@ -89,7 +93,7 @@ class FullImageInference(DAMInference):
         """
         ensure_dir(output_path)
         
-        prompt_template = PromptTemplates.get_template(
+        prompt_template = PromptTemplates.get(
             use_visibility_rule=use_visibility_rule,
             use_unanswerable_rule=use_unanswerable_rule
         )
@@ -184,7 +188,7 @@ class SlidingWindowInference(DAMInference):
         """
         ensure_dir(output_path)
         
-        prompt_template = PromptTemplates.get_template(
+        prompt_template = PromptTemplates.get(
             use_visibility_rule=use_visibility_rule,
             use_unanswerable_rule=use_unanswerable_rule
         )
@@ -270,7 +274,7 @@ class SlidingWindowInference(DAMInference):
         print(f"Total time: {duration:.1f}s ({duration/60:.1f}m)")
 
 
-def run_experiment(method: str, dataset: str, split: str, output_dir: str,
+def run_experiment(method: str, dataset: str, output_dir: str,
                   gpu: str = "0", **kwargs) -> str:
     """
     Run a complete experiment with specified parameters.
@@ -278,7 +282,6 @@ def run_experiment(method: str, dataset: str, split: str, output_dir: str,
     Args:
         method: Inference method ("full_image" or "sliding_window")
         dataset: Dataset name
-        split: Dataset split
         output_dir: Output directory
         gpu: GPU device ID
         **kwargs: Additional method-specific parameters
@@ -289,12 +292,12 @@ def run_experiment(method: str, dataset: str, split: str, output_dir: str,
     os.environ["CUDA_VISIBLE_DEVICES"] = gpu
     
     # Get dataset config
-    from .config import get_dataset_config, get_output_path
-    dataset_config = get_dataset_config(dataset, split)
+    from config import get_dataset_config, get_output_path
+    dataset_config = get_dataset_config(dataset)
     
     # Generate output path
     experiment_name = f"{method}_{kwargs.get('experiment_suffix', 'default')}"
-    output_path = get_output_path(output_dir, experiment_name, dataset, split)
+    output_path = get_output_path(output_dir, experiment_name, dataset)
     
     # Initialize inference method
     if method == "full_image":

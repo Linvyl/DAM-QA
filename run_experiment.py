@@ -33,7 +33,7 @@ from typing import List
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 from src.core import FullImageInference, SlidingWindowInference, run_experiment
-from src.config import (
+from config import (
     DATASET_CONFIGS, get_dataset_config, get_output_path,
     GRANULARITY_MODES, UNANSWERABLE_WEIGHTS
 )
@@ -256,7 +256,7 @@ def main():
     parser.add_argument("--stride", type=int, default=256,
                        help="Sliding window stride")
     
-    parser.add_argument("--unanswerable_weight", type=float, default=1.0,
+    parser.add_argument("--unanswerable_weight", type=float, default=0.0,
                        help="Weight multiplier for unanswerable votes")
     
     # Prompt design arguments

@@ -11,7 +11,8 @@ from tqdm import tqdm
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from vlms.config import ds_collections
+from config import DATASET_CONFIGS
+
 
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 _model = _tokenizer = None
@@ -437,8 +438,6 @@ def evaluate_folder(folder_path: str, use_llm: bool = False) -> None:
     for csv_file in glob.glob(os.path.join(folder_path, '*.csv')):
         base = os.path.basename(csv_file).lower()
         model_name, dataset = base[:-4].split('_', 1)
-        # if model_name not in ["gpt4roi"]:
-        #     continue
         model_results = results.setdefault(model_name, {})
         existing_scores = model_results.get(dataset, {})
         main_score = existing_scores.get('main_score')
@@ -449,7 +448,7 @@ def evaluate_folder(folder_path: str, use_llm: bool = False) -> None:
 
         llm_scores_list = None
         if main_score is None:
-            metric = ds_collections[dataset]['metric']
+            metric = DATASET_CONFIGS[dataset].metric
             if metric == 'chartqapro':
                 main_score = evaluate_predictions_chartqapro(rows)
             else:

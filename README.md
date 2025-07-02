@@ -28,7 +28,6 @@ This method enables more effective grounding and reasoning over fine-grained tex
 3. **Data Preparation:**
    - All required annotation `.jsonl` files are already included in the repository under the `data/` directory.
    - You only need to download the image files for each dataset. **Follow the instructions in [`data/dataset_guide.md`](data/dataset_guide.md)** to download and place the images in the correct subfolders.
-   - The default data directory is `data/`—no need to set or change any `BASE_DIR` variable.
 
 ## Repository Structure
 
@@ -61,18 +60,18 @@ DAM-QA/
     └── vlm_results/
 ```
 
-## Supported Datasets
+## Datasets
 
 Our implementation has been rigorously evaluated on the following benchmarks:
 
-| Dataset            | Task                        | Metric           | Images | Config Key |
-| :----------------- | :-------------------------- | :--------------- | :----- | :--------- |
-| **DocVQA**         | Document Question Answering | ANLS             | ~12K   | `docvqa_val` |
-| **InfographicVQA** | Infographic Understanding   | ANLS             | ~5K    | `infographicvqa_val` |
-| **TextVQA**        | Scene-Text VQA              | VQA Score        | ~28K   | `textvqa_val` |
-| **ChartQA**        | Chart Interpretation        | Relaxed Accuracy | ~20K   | `chartqa_test_human`, `chartqa_test_augmented` |
-| **ChartQA-Pro**    | Advanced Chart QA           | Relaxed Accuracy | ~1.3K  | `chartqapro_test` |
-| **VQAv2**          | General-Purpose VQA         | VQA Score        | ~204K  | `vqav2_val` |
+| Dataset            | Task                        | Metric           | Config Key |
+| :----------------- | :-------------------------- | :--------------- | :----- |
+| **DocVQA**         | Document Question Answering | ANLS             | `docvqa_val` |
+| **InfographicVQA** | Infographic Understanding   | ANLS             | `infographicvqa_val` |
+| **TextVQA**        | Scene-Text VQA              | VQA Score        | `textvqa_val` |
+| **ChartQA**        | Chart Interpretation        | Relaxed Accuracy | `chartqa_test_human`, `chartqa_test_augmented` |
+| **ChartQAPro**    | Advanced Chart QA           | Relaxed Accuracy | `chartqapro_test` |
+| **VQAv2** (restval) | General-Purpose VQA         | VQA Score        | `vqav2_restval` |
 
 ## Data Preparation
 
@@ -160,7 +159,7 @@ python run_experiment.py \
 - `--dataset`: Choose from `chartqapro_test`, `chartqa_test_human`, `docvqa_val`, `infographicvqa_val`, etc., or `all`
 - `--window_size`: Sliding window size (default: 512)
 - `--stride`: Sliding window stride (default: 256) 
-- `--unanswerable_weight`: Weight for unanswerable votes (default: 1.0)
+- `--unanswerable_weight`: Weight for unanswerable votes (default: 0.0)
 - `--use_visibility_rule`/`--no_visibility_rule`: Control visibility constraint
 - `--use_unanswerable_rule`/`--no_unanswerable_rule`: Control unanswerable instruction
 
@@ -204,10 +203,10 @@ python evaluation/metrics.py --file ./outputs/sliding_window_default/chartqapro_
 
 DAM-QA consistently outperforms the baseline DAM across multiple text-rich VQA benchmarks:
 
-| Method            | DocVQA (ANLS) | InfographicVQA (ANLS) | TextVQA (VQA Score) | ChartQA (Relaxed Acc.) | ChartQA-Pro (Relaxed Acc.) | VQAv2 (VQA Score) |
+| Method            | DocVQA (ANLS) | InfographicVQA (ANLS) | TextVQA (VQA Score) | ChartQA (Relaxed Acc.) | ChartQAPro (Relaxed Acc.) | VQAv2 (VQA Score) |
 | :---------------- | :-----------: | :-------------------: | :-----------------: | :--------------------: | :------------------------: | :---------------: |
-| DAM (Baseline)    |     35.22     |         19.27         |        65.22        |         35.62          |           18.90            |       79.25       |
-| **DAM-QA (Ours)** |   **42.34**   |       **35.60**       |      **67.29**      |       **40.06**        |         **18.98**          |     **79.20**     |
+| DAM (Baseline)    |     35.22     |         19.27         |        57.86        |          46.52          |           **18.90**            |       **79.25**       |
+| **DAM-QA (Ours)** |   **42.34**   |       **20.25**       |      **59.67**      |       **47.72**        |           14.88             |      79.20     |
 
 ### Key Findings
 

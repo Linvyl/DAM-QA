@@ -256,7 +256,7 @@ def main():
     parser.add_argument("--stride", type=int, default=256,
                        help="Sliding window stride")
     
-    parser.add_argument("--unanswerable_weight", type=float, default=1.0,
+    parser.add_argument("--unanswerable_weight", type=float, default=0.0,
                        help="Weight multiplier for unanswerable votes")
     
     # Prompt design arguments

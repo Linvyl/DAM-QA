@@ -10,7 +10,7 @@ DAM-QA supports evaluation on 6 VQA datasets that focus on text-rich image under
 - **InfographicVQA**: Complex infographic understanding with text, charts, and visual elements
 - **TextVQA**: Text-based visual question answering in natural scenes
 - **ChartQA**: Chart and graph analysis (human + augmented variants)
-- **ChartQA-Pro**: Advanced chart understanding with complex reasoning
+- **ChartQAPro**: Advanced chart understanding with complex reasoning
 - **VQAv2**: General visual question answering
 
 ## 📁 Expected Directory Structure
@@ -90,9 +90,8 @@ Download chart images:
 
 ```bash
 cd data/chartqa
-# Download images from Google Drive
-# Manual download required from: 
-# https://drive.google.com/file/d/1Lm_w6zeET1Hyl_9ks6w5nEsgpoyPHalV/view
+# Download images from official repository
+# https://github.com/vis-nlp/ChartQA
 # Extract the downloaded ChartQA_Dataset.zip to current folder
 # Then move chart images:
 # mv ChartQA\ Dataset/test/* images/
@@ -100,9 +99,9 @@ cd data/chartqa
 # mv ChartQA\ Dataset/train/* images/
 cd ../..
 ```
-**Note**: Manual download required from Google Drive link above.
+**Note**: Manual download required from [https://github.com/vis-nlp/ChartQA](https://github.com/vis-nlp/ChartQA)
 
-### ChartQA-Pro Images
+### ChartQAPro Images
 
 Download advanced chart images:
 
@@ -130,18 +129,6 @@ rm val2014.zip
 cd ../..
 ```
 
-## 📊 Dataset Statistics
-
-| Dataset | Images | Questions | Domains | Metric |
-|---------|--------|-----------|---------|--------|
-| **DocVQA** | ~5K | 5,349 | Documents | ANLS |
-| **InfographicVQA** | ~3K | 2,801 | Infographics | ANLS |
-| **TextVQA** | ~5K | 5,000 | Natural scenes | VQA Score |
-| **ChartQA** | ~1.25K×2 | 2,500 | Charts/Plots | Relaxed Accuracy |
-| **ChartQA-Pro** | ~1.3K | 1,308 | Advanced charts | Relaxed Accuracy |
-| **VQAv2** | ~40K | 214,354 | Natural images | VQA Score |
-
----
 
 **Note**: The annotation JSONL files are already included in this repository under `data/{dataset}/`. You only need to download the image files following the instructions above.
 

@@ -18,7 +18,7 @@ try:
         
 except ImportError:
     # Fallback to local definitions if unified config not available
-    BASE_DIR = "../data/datasets"
+    BASE_DIR = "data"
     
     ds_collections = {    
         "vqav2_restval": {

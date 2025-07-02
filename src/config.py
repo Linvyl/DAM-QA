@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 
 # Base data directory
-BASE_DIR = "/mnt/VLAI_data"
+BASE_DIR = "data"
 
 
 @dataclass
@@ -88,38 +88,38 @@ DEFAULT_WINDOW_PARAMS = {
 # Dataset configurations (flat structure to match VLM config)
 DATASET_CONFIGS = {
     "chartqapro_test": DatasetConfig(
-        qa_file=f"{BASE_DIR}/ChartQAPro/test.jsonl",
-        img_folder=f"{BASE_DIR}/ChartQAPro/images",
+        qa_file=f"{BASE_DIR}/chartqapro/test.jsonl",
+        img_folder=f"{BASE_DIR}/chartqapro/images",
         max_new_tokens=100
     ),
     "chartqa_test_human": DatasetConfig(
-        qa_file=f"{BASE_DIR}/ChartQA/test_human.jsonl", 
-        img_folder=f"{BASE_DIR}/ChartQA",
+        qa_file=f"{BASE_DIR}/chartqa/test_human.jsonl",
+        img_folder=f"{BASE_DIR}/chartqa/images",
         max_new_tokens=100
     ),
     "chartqa_test_augmented": DatasetConfig(
-        qa_file=f"{BASE_DIR}/ChartQA/test_augmented.jsonl",
-        img_folder=f"{BASE_DIR}/ChartQA", 
+        qa_file=f"{BASE_DIR}/chartqa/test_augmented.jsonl",
+        img_folder=f"{BASE_DIR}/chartqa/images",
         max_new_tokens=100
     ),
     "docvqa_val": DatasetConfig(
-        qa_file=f"{BASE_DIR}/DocVQA/val.jsonl",
-        img_folder=f"{BASE_DIR}/DocVQA/images",
+        qa_file=f"{BASE_DIR}/docvqa/val.jsonl",
+        img_folder=f"{BASE_DIR}/docvqa/images",
         max_new_tokens=100
     ),
     "infographicvqa_val": DatasetConfig(
-        qa_file=f"{BASE_DIR}/InfographicVQA/infographicvqa_val.jsonl",
-        img_folder=f"{BASE_DIR}/InfographicVQA/images", 
+        qa_file=f"{BASE_DIR}/infographicvqa/infographicvqa_val.jsonl",
+        img_folder=f"{BASE_DIR}/infographicvqa/images",
         max_new_tokens=100
     ),
     "textvqa_val": DatasetConfig(
-        qa_file=f"{BASE_DIR}/TextVQA/textvqa_val_updated.jsonl",
-        img_folder=f"{BASE_DIR}/TextVQA/train_images",
+        qa_file=f"{BASE_DIR}/textvqa/textvqa_val_updated.jsonl",
+        img_folder=f"{BASE_DIR}/textvqa/images",
         max_new_tokens=10
     ),
     "vqav2_val": DatasetConfig(
-        qa_file=f"{BASE_DIR}/VQAv2/vqav2_restval.jsonl",
-        img_folder=f"{BASE_DIR}/COCO_Images/val2014",
+        qa_file=f"{BASE_DIR}/vqav2/vqav2_restval.jsonl",
+        img_folder=f"{BASE_DIR}/vqav2/images",
         max_new_tokens=10
     ),
 }

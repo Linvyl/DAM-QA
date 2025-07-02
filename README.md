@@ -18,10 +18,10 @@ This method enables more effective grounding and reasoning over fine-grained tex
    pip install -r requirements.txt
    ```
 
-3. Set up your data directory path in `src/config.py`:
-   ```python
-   BASE_DIR = "/path/to/your/datasets"  # Update this path
-   ```
+3. **Data Preparation:**
+   - All required annotation `.jsonl` files are already included in the repository under the `data/` directory.
+   - You only need to download the image files for each dataset. **Follow the instructions in [`data/dataset_guide.md`](data/dataset_guide.md)** to download and place the images in the correct subfolders.
+   - The default data directory is `data/`—no need to set or change any `BASE_DIR` variable.
 
 ## Repository Structure
 
@@ -47,6 +47,7 @@ DAM-QA/
 │   └── evaluator.py       # Main evaluation runner
 ├── run_experiment.py      # Main DAM-QA experiment runner
 ├── requirements.txt       # Python dependencies
+├── data/                  # Datasets and annotation files (see below)
 └── outputs/               # Results directory
     ├── full_image_default/
     ├── sliding_window_default/
@@ -70,32 +71,34 @@ Our implementation has been rigorously evaluated on the following benchmarks:
 
 ### Dataset Structure
 
-Organize your datasets according to the following directory structure:
+After downloading images as instructed in [`data/dataset_guide.md`](data/dataset_guide.md), your `data/` directory should look like this:
 
 ```
-/path/to/datasets/
-├── ChartQAPro/
-│   ├── test.jsonl
+data/
+├── docvqa/
+│   ├── val.jsonl
 │   └── images/
-├── ChartQA/
+├── infographicvqa/
+│   ├── infographicvqa_val.jsonl
+│   └── images/
+├── textvqa/
+│   ├── textvqa_val_updated.jsonl
+│   └── images/
+├── chartqa/
 │   ├── test_human.jsonl
 │   ├── test_augmented.jsonl
 │   └── images/
-├── DocVQA/
-│   ├── val.jsonl
+├── chartqapro/
+│   ├── test.jsonl
 │   └── images/
-├── InfographicVQA/
-│   ├── infographicvqa_val.jsonl
-│   └── images/
-├── TextVQA/
-│   ├── textvqa_val.jsonl
-│   └── images/
-└── VQAv2/
-    ├── vqav2_val.jsonl
+└── vqav2/
+    ├── vqav2_restval.jsonl
     └── images/
 ```
 
-Update the `BASE_DIR` variable in `src/config.py` to point to your dataset directory.
+- **Do not change the folder names or move the annotation files.**
+- **You do NOT need to set any data path in `src/config.py`—the code will use `data/` as the default base directory.**
+- For detailed image download instructions, see [`data/dataset_guide.md`](data/dataset_guide.md).
 
 ## Running DAM-QA Experiments
 

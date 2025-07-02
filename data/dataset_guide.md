@@ -1,6 +1,6 @@
 # Dataset Image Download Guide for DAM-QA
 
-This guide provides instructions for downloading **only the image files** for DAM-QA evaluation. The annotation JSONL files are already included in the repository.
+This guide provides instructions for downloading **only the image files** for DAM-QA evaluation. The annotation JSONL files are already included in the repository under the `data/` directory.
 
 ## 🌟 Overview
 
@@ -47,18 +47,12 @@ data/
 Download document images from the official DocVQA dataset:
 
 ```bash
-# Navigate to DocVQA folder
 cd data/docvqa
-
-# Download and extract validation images
 wget https://datasets.cvc.uab.es/rrc/DocVQA/val.tar.gz --no-check-certificate
 tar -zxvf val.tar.gz
-
-# Move images to the expected location
 mv val/* images/
 rmdir val
 rm val.tar.gz
-
 cd ../..
 ```
 
@@ -67,17 +61,13 @@ cd ../..
 Download infographic images:
 
 ```bash
-# Navigate to InfographicVQA folder  
 cd data/infographicvqa
-
 # Download images from official source
 # Visit: https://rrc.cvc.uab.es/?ch=17&com=downloads
 # Manual download required - get infographicsVQA validation images
 # Extract to images/ folder
-
 cd ../..
 ```
-
 **Note**: Manual download required from [https://rrc.cvc.uab.es/?ch=17&com=downloads](https://rrc.cvc.uab.es/?ch=17&com=downloads)
 
 ### TextVQA Images
@@ -85,18 +75,12 @@ cd ../..
 Download scene text images:
 
 ```bash
-# Navigate to TextVQA folder
 cd data/textvqa
-
-# Download training images (which include validation images)
 wget https://dl.fbaipublicfiles.com/textvqa/images/train_val_images.zip
 unzip train_val_images.zip
-
-# Move train_images to images folder
 mv train_images/* images/
 rmdir train_images
 rm train_val_images.zip
-
 cd ../..
 ```
 
@@ -105,23 +89,17 @@ cd ../..
 Download chart images:
 
 ```bash
-# Navigate to ChartQA folder
 cd data/chartqa
-
 # Download images from Google Drive
 # Manual download required from: 
 # https://drive.google.com/file/d/1Lm_w6zeET1Hyl_9ks6w5nEsgpoyPHalV/view
 # Extract the downloaded ChartQA_Dataset.zip to current folder
 # Then move chart images:
-
-# After manual download and extraction:
 # mv ChartQA\ Dataset/test/* images/
 # mv ChartQA\ Dataset/val/* images/
 # mv ChartQA\ Dataset/train/* images/
-
 cd ../..
 ```
-
 **Note**: Manual download required from Google Drive link above.
 
 ### ChartQA-Pro Images
@@ -129,17 +107,13 @@ cd ../..
 Download advanced chart images:
 
 ```bash
-# Navigate to ChartQA-Pro folder
 cd data/chartqapro
-
 # Download from official repository
 # Visit: https://huggingface.co/datasets/ahmed-masry/ChartQAPro
 # Follow their instructions to download images
 # Extract to images/ folder
-
 cd ../..
 ```
-
 **Note**: Follow official instructions at [https://huggingface.co/datasets/ahmed-masry/ChartQAPro](https://huggingface.co/datasets/ahmed-masry/ChartQAPro)
 
 ### VQAv2 Images
@@ -147,18 +121,12 @@ cd ../..
 Download COCO validation images for VQAv2:
 
 ```bash
-# Navigate to VQAv2 folder
 cd data/vqav2
-
-# Download COCO val2014 images (used by VQAv2)
 wget http://images.cocodataset.org/zips/val2014.zip
 unzip val2014.zip
-
-# Move images to expected location
 mv val2014/* images/
 rmdir val2014
 rm val2014.zip
-
 cd ../..
 ```
 

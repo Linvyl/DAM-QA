@@ -1,5 +1,7 @@
 # DAM-QA: Describe Anything Model for Visual Question Answering on Text-rich Images
 
+[Paper](https://arxiv.org/abs/2507.12441)
+
 This repository contains the official implementation of **DAM-QA**, a framework that enhances Visual Question Answering (VQA) performance on text-rich images. Our approach extends the [Describe Anything Model (DAM)](https://github.com/NVlabs/describe-anything) by integrating a sliding-window mechanism with a weighted voting scheme to aggregate predictions from both global and local views.
 
 This method enables more effective grounding and reasoning over fine-grained textual information, leading to significant performance gains on challenging VQA benchmarks.
@@ -234,6 +236,7 @@ DAM-QA consistently outperforms the baseline DAM across multiple text-rich VQA b
   title={Describe Anything Model for Visual Question Answering on Text-rich Images},
   author={Vu, Yen-Linh and Duong, Dinh-Thang and Duong, Truong-Binh and Nguyen, Anh-Khoi and Nguyen, Le Thien Phuc and Xing, Jianhua and Li, Xingjian and Wang, Tianyang and Nguyen, Thanh-Huy and Bagci, Ulas and Xu, Min},
   journal={arXiv preprint},
-  year={2025}
+  year={2025},
+  url={https://arxiv.org/abs/2507.12441}
 }
 ```

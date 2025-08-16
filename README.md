@@ -1,6 +1,9 @@
 # DAM-QA: Describe Anything Model for Visual Question Answering on Text-rich Images
 
-[Paper](https://arxiv.org/abs/2507.12441)
+[![Paper](https://img.shields.io/badge/arXiv-2507.12441-b31b1b.svg)](https://arxiv.org/abs/2507.12441)
+[![Dataset](https://img.shields.io/badge/🤗%20Hugging%20Face-Dataset-blue)](https://huggingface.co/datasets/VLAI-AIVN/DAM-QA-annotations)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![Code](https://img.shields.io/badge/GitHub-Repository-black)](https://github.com/Linvyl/DAM-QA)
 
 This repository contains the official implementation of **DAM-QA**, a framework that enhances Visual Question Answering (VQA) performance on text-rich images. Our approach extends the [Describe Anything Model (DAM)](https://github.com/NVlabs/describe-anything) by integrating a sliding-window mechanism with a weighted voting scheme to aggregate predictions from both global and local views.
 
@@ -29,7 +32,10 @@ This method enables more effective grounding and reasoning over fine-grained tex
 
 3. **Data Preparation:**
    - All required annotation `.jsonl` files are already included in the repository under the `data/` directory.
+   - We also provide these unified annotation files in our [🤗 Hugging Face dataset repository](https://huggingface.co/datasets/VLAI-AIVN/DAM-QA-annotations) for convenience and reproducibility.
    - You only need to download the image files for each dataset. **Follow the instructions in [`data/dataset_guide.md`](data/dataset_guide.md)** to download and place the images in the correct subfolders.
+
+   **⚠️ Important Note:** The annotation files are standardized conversions of existing public datasets (DocVQA, InfographicVQA, TextVQA, ChartQA, ChartQAPro, VQAv2) into a unified JSONL format following our experimental setup. These annotations preserve the original dataset content without modification. Please cite the original datasets appropriately when using them in your research.
 
 ## Repository Structure
 
@@ -232,11 +238,13 @@ DAM-QA consistently outperforms the baseline DAM across multiple text-rich VQA b
 ## Citation
 
 ```bibtex
-@article{damqa2025,
-  title={Describe Anything Model for Visual Question Answering on Text-rich Images},
-  author={Vu, Yen-Linh and Duong, Dinh-Thang and Duong, Truong-Binh and Nguyen, Anh-Khoi and Nguyen, Le Thien Phuc and Xing, Jianhua and Li, Xingjian and Wang, Tianyang and Nguyen, Thanh-Huy and Bagci, Ulas and Xu, Min},
-  journal={arXiv preprint},
-  year={2025},
-  url={https://arxiv.org/abs/2507.12441}
+@misc{vu2025modelvisualquestionanswering,
+      title={Describe Anything Model for Visual Question Answering on Text-rich Images}, 
+      author={Yen-Linh Vu and Dinh-Thang Duong and Truong-Binh Duong and Anh-Khoi Nguyen and Thanh-Huy Nguyen and Le Thien Phuc Nguyen and Jianhua Xing and Xingjian Li and Tianyang Wang and Ulas Bagci and Min Xu},
+      year={2025},
+      eprint={2507.12441},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2507.12441}, 
 }
 ```

@@ -1,6 +1,19 @@
 # Dataset Image Download Guide for DAM-QA
 
-This guide provides instructions for downloading **only the image files** for DAM-QA evaluation. The annotation JSONL files are already included in the repository under the `data/` directory.
+This guide provides instructions for downloading **only the image files** for DAM-QA evaluation. The annotation JSONL files are already included in the repository under the `data/` directory and are also available on [🤗 Hugging Face](https://huggingface.co/datasets/VLAI-AIVN/DAM-QA-annotations).
+
+## ⚠️ Dataset Attribution Notice
+
+**Important:** The annotation files provided are standardized conversions of existing public datasets into a unified JSONL format. We do not claim ownership of the original dataset content. These files are:
+
+- **DocVQA**: Converted from the original [DocVQA dataset](https://www.docvqa.org/)
+- **InfographicVQA**: Converted from the original [InfographicVQA dataset](https://www.docvqa.org/datasets/infographicvqa)
+- **TextVQA**: Converted from the original [TextVQA dataset](https://textvqa.org/)
+- **ChartQA**: Converted from the original [ChartQA dataset](https://github.com/vis-nlp/ChartQA)
+- **ChartQAPro**: Converted from the original [ChartQAPro dataset](https://huggingface.co/datasets/ahmed-masry/ChartQAPro)
+- **VQAv2**: Converted from the original [VQAv2 dataset](https://visualqa.org/)
+
+Please cite the original datasets appropriately when using them in your research. The conversion maintains data integrity while providing a consistent format for reproducible experiments.
 
 ## 🌟 Overview
 
@@ -128,8 +141,3 @@ rmdir val2014
 rm val2014.zip
 cd ../..
 ```
-
-
-**Note**: The annotation JSONL files are already included in this repository under `data/{dataset}/`. You only need to download the image files following the instructions above.
-
-For more information about DAM-QA, see the main [README](../README.md). 

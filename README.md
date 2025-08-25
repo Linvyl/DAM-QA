@@ -41,7 +41,7 @@ This method enables more effective grounding and reasoning over fine-grained tex
 
 ```
 DAM-QA/
-├── src/                    # Core DAM-QA implementation
+├── src/                   # Core DAM-QA implementation
 │   ├── config.py          # Dataset configs, prompts, parameters
 │   ├── core.py            # Main inference classes
 │   └── utils.py           # Utility functions
@@ -49,13 +49,13 @@ DAM-QA/
 │   ├── run_inference.py   # VLM inference runner
 │   ├── config.py          # VLM dataset configurations
 │   └── models/            # Individual VLM model implementations
-│       ├── internvl.py    # InternVL model
-│       ├── minicpm.py     # MiniCPM model
-│       ├── molmo.py       # Molmo model
-│       ├── ovis.py        # OVIS model  
-│       ├── phi.py         # Phi-3-Vision model
-│       ├── qwenvl.py      # Qwen-VL model
-│       └── videollama.py  # VideoLLaMA model
+│       ├── internvl.py    # InternVL3 model
+│       ├── minicpm.py     # MiniCPM-o2.6 model
+│       ├── molmo.py       # MolmoD model
+│       ├── ovis.py        # OVIS2 model  
+│       ├── phi.py         # Phi-4-Vision model
+│       ├── qwenvl.py      # Qwen2.5-VL model
+│       └── videollama.py  # VideoLLaMA3 model
 ├── evaluation/            # Evaluation framework
 │   ├── metrics.py         # VQA scoring metrics
 │   └── evaluator.py       # Main evaluation runner

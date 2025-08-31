@@ -63,13 +63,7 @@ outputs/
 *.log
 logs/
 
-# Images
-*.png
-*.jpg
-*.jpeg
-
 # Model weights and checkpoints
-models/
 pretrained_models/
 *.bin
 *.safetensors

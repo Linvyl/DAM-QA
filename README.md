@@ -7,6 +7,8 @@
 
 This repository contains the official implementation of **DAM-QA**, a framework that enhances Visual Question Answering (VQA) performance on text-rich images. Our approach extends the [Describe Anything Model (DAM)](https://github.com/NVlabs/describe-anything) by integrating a sliding-window mechanism with a weighted voting scheme to aggregate predictions from both global and local views.
 
+![DAM-QA](assets/DAM-QA.png)
+
 This method enables more effective grounding and reasoning over fine-grained textual information, leading to significant performance gains on challenging VQA benchmarks.
 
 ## Quick Start

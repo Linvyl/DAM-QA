@@ -2,6 +2,7 @@
 
 [![Paper](https://img.shields.io/badge/arXiv-2507.12441-b31b1b.svg)](https://arxiv.org/abs/2507.12441)
 [![Dataset](https://img.shields.io/badge/🤗%20Hugging%20Face-Dataset-blue)](https://huggingface.co/datasets/VLAI-AIVN/DAM-QA-annotations)
+[![Demo](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demo-yellow)](https://huggingface.co/spaces/VLAI-AIVN/DAM-QA_Demo)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Code](https://img.shields.io/badge/GitHub-Repository-black)](https://github.com/Linvyl/DAM-QA)
 
